@@ -1,0 +1,6 @@
+nome = str(input('Olá qual seria seu nome? '))
+print(f'Prazer em te conhecer {nome}, meu nome eh Jorginho e vou te ajudar a somar dois numeros!')
+n1 = int(input('Qual seria o primeiro numero? '))
+n2 = int(input('Muito bem, e agora qual seria o segundo numero? '))
+nmax = (n1+n2)
+print(f'Bem {nome}, a somatoria dos numeros {n1} e {n2} seria {nmax}!')
