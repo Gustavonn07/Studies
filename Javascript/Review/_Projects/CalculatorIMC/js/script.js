@@ -12,16 +12,13 @@ btnCalc.addEventListener("click", (e) => {
   e.preventDefault();
   if (!heightInput.value || !weightInput.value) return;
 
-  calcNumberIMC.classList.remove("text-slate-900", "text-red-300");
-  calcNumberIMC.classList.add(
-    calculator.calculate(heightInput.value, weightInput.value).meta.class
+  const { meta, result } = calculator.calculate(
+    heightInput.value,
+    weightInput.value
   );
-  calcNumberIMC.textContent = calculator.calculate(
-    heightInput.value,
-    weightInput.value
-  ).result.toFixed(4);
-  calcText.textContent = calculator.calculate(
-    heightInput.value,
-    weightInput.value
-  ).meta.text;
+
+  calcNumberIMC.classList.remove("text-slate-900", "text-red-300");
+  calcNumberIMC.classList.add(meta.class);
+  calcNumberIMC.textContent = result.toFixed(4);
+  calcText.textContent = meta.text;
 });
