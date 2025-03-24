@@ -1,28 +1,4 @@
-/**
- * Tabuleiro:
- *
- * [["", "", ""],
- *  ["", "", ""],
- *  ["", "", ""]]
- *
- * GANHAR:
- * - Linhas
- * board[0][0], board[0][1], board[0][2]
- * board[1][2], board[1][1], board[1][2]
- * board[2][0], board[2][1], board[2][2]
- *
- * - Colunas
- * board[0][0], board[1][0], board[2][0]
- * board[0][1], board[1][1], board[2][1]
- * board[0][2], board[1][2], board[2][2]
- *
- * - Diagonais
- * board[0][0], board[1][1], board[2][2]
- * board[0][2], board[1][1], board[2][0]
- *
- */
-
-class Player {
+export class Player {
   #team;
   #name;
   constructor(team, name) {
@@ -58,7 +34,7 @@ class Player {
   }
 }
 
-class TicTacToe {
+export class TicTacToe {
   #board;
   #victory;
   constructor() {
@@ -117,7 +93,23 @@ class TicTacToe {
     return false;
   }
 
+  resetBoard() {
+    this.#board = [
+      ["", "", ""],
+      ["", "", ""],
+      ["", "", ""],
+    ];
+    this.#victory = {
+      player: null,
+      isOver: false,
+    };
+  }
+
   get victory() {
     return this.#victory;
+  }
+
+  get board() {
+    return this.#board.map(row => [...row]);
   }
 }

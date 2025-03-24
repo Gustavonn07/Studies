@@ -5,13 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Jogo da Velha</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      * {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+    </style>
   </head>
   <body class="bg-gray-100 flex justify-center items-center h-screen">
-    <main id="root" class="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+    <main id="root" class="bg-white p-6 rounded-lg shadow-md w-full max-w-md text-center">
       <h1 class="text-2xl font-bold mb-4">Jogo da Velha</h1>
-      
+      <div id="board" class="grid grid-cols-3 gap-2 w-64 mx-auto">
+        <button class="w-20 h-20 bg-gray-200 text-3xl font-bold flex justify-center items-center" data-row="0" data-col="0"></button>
+        <button class="w-20 h-20 bg-gray-200 text-3xl font-bold flex justify-center items-center" data-row="0" data-col="1"></button>
+        <button class="w-20 h-20 bg-gray-200 text-3xl font-bold flex justify-center items-center" data-row="0" data-col="2"></button>
+        <button class="w-20 h-20 bg-gray-200 text-3xl font-bold flex justify-center items-center" data-row="1" data-col="0"></button>
+        <button class="w-20 h-20 bg-gray-200 text-3xl font-bold flex justify-center items-center" data-row="1" data-col="1"></button>
+        <button class="w-20 h-20 bg-gray-200 text-3xl font-bold flex justify-center items-center" data-row="1" data-col="2"></button>
+        <button class="w-20 h-20 bg-gray-200 text-3xl font-bold flex justify-center items-center" data-row="2" data-col="0"></button>
+        <button class="w-20 h-20 bg-gray-200 text-3xl font-bold flex justify-center items-center" data-row="2" data-col="1"></button>
+        <button class="w-20 h-20 bg-gray-200 text-3xl font-bold flex justify-center items-center" data-row="2" data-col="2"></button>
+      </div>
+      <button id="button-reset" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">Reiniciar</button>
     </main>
-
     <script type="module" src="./js/script.js"></script>
   </body>
 </html>
