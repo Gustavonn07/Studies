@@ -1,3 +1,0 @@
-Model a Bank with the ability to access the vault. Model a BankManager and a Customer
-too. Ensure the Customer can not access the Bank’s vault directly but the BankManager
-can.
