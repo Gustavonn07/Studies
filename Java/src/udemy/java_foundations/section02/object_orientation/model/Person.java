@@ -10,6 +10,7 @@ public class Person {
     private Address address;
     private Person fiancee;
     private Animal pet;
+    public final static String SOMETHING = "Olá mundo";
 
     public Person(String firstName, String lastName, LocalDate dateOfBirth, Address address, Person fiancee, Animal pet) {
         this.firstName = firstName;
@@ -66,6 +67,10 @@ public class Person {
 
     public void setPet(Animal pet) {
         this.pet = pet;
+    }
+
+    public static void sayDefinition() {
+        System.out.println("A Person");
     }
 
     @Override

@@ -8,5 +8,7 @@ public class Main {
     public static void main(String[] args) {
         Person person01 = new Person("Jorge", "Luis", LocalDate.of(2003, 12, 7), null, null, null);
         System.out.println(person01);
+        Person.sayDefinition();
+        System.out.println(Person.SOMETHING);
     }
 }
