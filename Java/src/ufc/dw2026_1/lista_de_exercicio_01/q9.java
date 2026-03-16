@@ -3,7 +3,7 @@ package ufc.dw2026_1.lista_de_exercicio_01;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class i_BiggerIn3 {
+public class q9 {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 

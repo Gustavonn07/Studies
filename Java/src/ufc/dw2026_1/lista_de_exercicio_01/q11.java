@@ -3,7 +3,7 @@ package ufc.dw2026_1.lista_de_exercicio_01;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class k_GenerateTab {
+public class q11 {
 
     private static int[] generateTab(int number) {
         int[] tab = new int[10];
@@ -27,6 +27,6 @@ public class k_GenerateTab {
 
         System.out.println("Selecione o número de 1 a 10 para gerar a tabuada: ");
         number = scanner.nextInt();
-        System.out.println(Arrays.toString(k_GenerateTab.getTab(number)));
+        System.out.println(Arrays.toString(q11.getTab(number)));
     }
 }

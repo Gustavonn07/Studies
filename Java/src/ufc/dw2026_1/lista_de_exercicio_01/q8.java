@@ -2,7 +2,7 @@ package ufc.dw2026_1.lista_de_exercicio_01;
 
 import java.util.Scanner;
 
-public class h_FinalMedia {
+public class q8 {
 
     private static double calcularMedia(double n1, double n2) {
         return (n1 + n2) / 2.0;
