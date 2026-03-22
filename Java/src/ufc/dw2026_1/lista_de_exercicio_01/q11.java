@@ -28,5 +28,7 @@ public class q11 {
         System.out.println("Selecione o número de 1 a 10 para gerar a tabuada: ");
         number = scanner.nextInt();
         System.out.println(Arrays.toString(q11.getTab(number)));
+
+        scanner.close();
     }
 }

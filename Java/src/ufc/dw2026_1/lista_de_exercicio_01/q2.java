@@ -9,5 +9,6 @@ public class q2 {
 
         double selectedNumber = scanner.nextDouble();
         System.out.println("O número informado foi: " +  selectedNumber);
+        scanner.close();
     }
 }

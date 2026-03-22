@@ -11,5 +11,6 @@ public class q3 {
         double n2 = scanner.nextDouble();
         double n3 = scanner.nextDouble();
         System.out.println("A sua média é de: " + (n1 + n2 + n3) / 3);
+        scanner.close();
     }
 }

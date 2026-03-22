@@ -9,5 +9,6 @@ public class q4 {
 
         float valueInMeter = scanner.nextFloat();
         System.out.println("O valor convertido para centímetos é de: " + (valueInMeter * 100));
+        scanner.close();
     }
 }

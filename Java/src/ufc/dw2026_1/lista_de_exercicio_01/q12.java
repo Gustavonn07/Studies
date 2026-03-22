@@ -14,5 +14,7 @@ public class q12 {
             System.out.println("Insira um número válido de 0 a 10: ");
             number = scanner.nextInt();
         }
+
+        scanner.close();
     }
 }
