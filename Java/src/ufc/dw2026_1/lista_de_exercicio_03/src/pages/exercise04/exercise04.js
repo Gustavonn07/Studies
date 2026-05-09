@@ -1,27 +1,32 @@
-import { createForm, createLabel, createSubmitButton } from "../../index.js";
+import { createErrorText, createForm, createLabel, createSelect, createSubmitButton, routeConstants } from "../../index.js";
 import { createFieldset } from "../../ui/fieldset.js";
-import { createInput } from "../../ui/input.js";
+import { verifySelect } from "./lib/exercise04.utils.js";
 
 const exercise04Page = () => {
-  const button = createSubmitButton();
-  const label = createLabel({ text: "Digite seu nome", id: "name" });
+  const button = createSubmitButton()
 
-  const input = createInput({
-    id: "name",
-    placeholder: "Digite seu nome",
-    type: "text",
-    required: true,
-  });
+  const label = createLabel({ text: "Escolha uma opção", id: "combo" })
 
-  const fieldset = createFieldset();
+  const select = createSelect({ id: "combo" })
+  
+  const errorText = createErrorText('Selecione uma opção válida')
 
-  fieldset.appendChild(label);
-  fieldset.appendChild(input);
-  fieldset.appendChild(button);
+  const fieldset = createFieldset()
 
-  const form = createForm({ children: fieldset, handler: () => {} });
+  fieldset.appendChild(label)
+  fieldset.appendChild(select)
+  fieldset.appendChild(errorText)
+  fieldset.appendChild(button)
 
-  return form;
-};
+  const form = createForm({
+    children: fieldset,
+    handler: () => verifySelect({ select, errorMessage: errorText }),
+    nextPage: routeConstants.EXERCISE_05
+  })
 
-export { exercise04Page };
+  return form
+}
+
+export { 
+  exercise04Page
+}

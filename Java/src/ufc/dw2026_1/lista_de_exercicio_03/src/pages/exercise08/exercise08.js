@@ -1,27 +1,67 @@
-import { createForm, createLabel, createSubmitButton } from "../../index.js";
+import { 
+  createErrorText,
+  createForm, 
+  createLabel, 
+  createSubmitButton,
+  pageUtils,
+  routeConstants,
+  verifyForm
+} from "../../index.js";
+
 import { createFieldset } from "../../ui/fieldset.js";
 import { createInput } from "../../ui/input.js";
 
 const exercise08Page = () => {
-  const button = createSubmitButton();
-  const label = createLabel({ text: "Digite seu nome", id: "name" });
+  const button = createSubmitButton()
 
-  const input = createInput({
+  const fieldset = createFieldset()
+
+  const nameLabel = createLabel({ text: "Nome", id: "name" })
+  const nameInput = createInput({
     id: "name",
-    placeholder: "Digite seu nome",
     type: "text",
-    required: true,
-  });
+    placeholder: "Digite seu nome"
+  })
 
-  const fieldset = createFieldset();
+  const loginLabel = createLabel({ text: "Login", id: "login" })
+  const loginInput = createInput({
+    id: "login",
+    type: "text",
+    placeholder: "Digite seu login"
+  })
 
-  fieldset.appendChild(label);
-  fieldset.appendChild(input);
-  fieldset.appendChild(button);
+  const passwordLabel = createLabel({ text: "Senha", id: "password" })
+  const passwordInput = createInput({
+    id: "password",
+    type: "password",
+    placeholder: "Digite sua senha"
+  })
 
-  const form = createForm({ children: fieldset, handler: () => {} });
+  const errorText = createErrorText("")
 
-  return form;
-};
+  fieldset.appendChild(nameLabel)
+  fieldset.appendChild(nameInput)
 
-export { exercise08Page };
+  fieldset.appendChild(loginLabel)
+  fieldset.appendChild(loginInput)
+
+  fieldset.appendChild(passwordLabel)
+  fieldset.appendChild(passwordInput)
+
+  fieldset.appendChild(errorText)
+  fieldset.appendChild(button)
+
+  const form = createForm({
+    children: fieldset,
+    handler: () => verifyForm({
+      name: nameInput,
+      login: loginInput,
+      password: passwordInput,
+      errorText
+    }),
+  })
+
+  return form
+}
+
+export { exercise08Page }

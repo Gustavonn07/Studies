@@ -1,9 +1,9 @@
-const createInput = ({ placeholder, id, type, required }) => {
+const createInput = ({ placeholder, id, type, required, name }) => {
 
   const input = document.createElement('input')
   input.required = required
   input.type = type
-  input.name = id
+  input.name = name ?? id
   input.id = id
   input.placeholder = placeholder ?? 'Digite algo:'
   input.className = `

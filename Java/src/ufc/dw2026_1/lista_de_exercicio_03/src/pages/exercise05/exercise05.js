@@ -1,27 +1,33 @@
-import { createForm, createLabel, createSubmitButton } from "../../index.js";
+import { createErrorText, createForm, createLabel, createSubmitButton, routeConstants, verifyCheckbox } from "../../index.js";
 import { createFieldset } from "../../ui/fieldset.js";
 import { createInput } from "../../ui/input.js";
 
 const exercise05Page = () => {
-  const button = createSubmitButton();
-  const label = createLabel({ text: "Digite seu nome", id: "name" });
+  const button = createSubmitButton()
 
-  const input = createInput({
-    id: "name",
-    placeholder: "Digite seu nome",
-    type: "text",
-    required: true,
-  });
+  const label = createLabel({ text: "Aceite os termos", id: "terms" })
 
-  const fieldset = createFieldset();
+  const checkbox = createInput({
+    type: 'checkbox',
+    id: 'terms'
+  })
 
-  fieldset.appendChild(label);
-  fieldset.appendChild(input);
-  fieldset.appendChild(button);
+  const errorText = createErrorText('Você precisa marcar o checkbox')
 
-  const form = createForm({ children: fieldset, handler: () => {} });
+  const fieldset = createFieldset()
 
-  return form;
-};
+  fieldset.appendChild(label)
+  fieldset.appendChild(checkbox)
+  fieldset.appendChild(errorText)
+  fieldset.appendChild(button)
 
-export { exercise05Page };
+  const form = createForm({
+    children: fieldset,
+    handler: () => verifyCheckbox({ checkbox, errorMessage: errorText }),
+    nextPage: routeConstants.EXERCISE_06
+  })
+
+  return form
+}
+
+export { exercise05Page }

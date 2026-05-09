@@ -1,10 +1,24 @@
-import { pageUtils } from "../shared/index.js"
+import { pageUtils, routes } from "../shared/index.js"
 
 const createForm = ({ children, handler, nextPage }) => {
   const form = document.createElement('form')
 
   const title = document.createElement('h1')
-  title.textContent = 'Formulário 0' + nextPage
+
+  const getTitleNumber = () => {
+    let value = 0;
+
+    if(nextPage) {
+      value = nextPage
+
+    } else {
+      value = routes.length
+    }
+
+    return value;
+  }
+
+  title.textContent = 'Formulário 0' + getTitleNumber()
   title.className = `
     text-xl
     font-semibold
@@ -37,6 +51,9 @@ const createForm = ({ children, handler, nextPage }) => {
 
     if (nextPage) {
       pageUtils.setPage(nextPage)
+
+    } else {
+      pageUtils.resetPage()
     }
   })
 

@@ -13,8 +13,6 @@ class PageUtils {
   }
 
   setPage(routeConstant) {
-    if (this.#page === routeConstant) return
-
     this.#page = routeConstant
     this.#executeRender()
   }
@@ -30,6 +28,14 @@ class PageUtils {
     return () => {
       this.#renderList = this.#renderList.filter(l => l !== render)
     }
+  }
+  resetPage() {
+    this.#page = routeConstants.EXERCISE_01
+    this.#executeRender()
+  }
+
+  clearRenders() {
+    this.#renderList = []
   }
 }
 

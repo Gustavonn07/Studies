@@ -20,12 +20,6 @@ const exercise02Page = () => {
 
   const button = createSubmitButton()
 
-  fieldset.className = `
-    flex
-    flex-col
-    gap-3
-  `
-
   fieldset.appendChild(label)
   fieldset.appendChild(input)
   fieldset.appendChild(errorText)
