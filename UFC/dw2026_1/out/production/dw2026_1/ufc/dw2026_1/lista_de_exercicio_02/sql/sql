@@ -1,0 +1,8 @@
+CREATE TABLE produto (
+    id SERIAL PRIMARY KEY,
+    descricao VARCHAR(255),
+    preco NUMERIC(10,2),
+    foto TEXT,
+    cor VARCHAR(50),
+    quantidade INT
+);
