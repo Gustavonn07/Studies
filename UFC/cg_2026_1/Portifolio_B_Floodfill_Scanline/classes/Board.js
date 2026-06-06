@@ -46,8 +46,7 @@ class Board {
 
   // MARK: - FLOOD_FILL
   floodfill(startX, startY, fillColor) {
-    const targetColor =
-      this.#image.getPixelColor(startX, startY);
+    const targetColor = this.#image.getPixelColor(startX, startY);
 
     if (targetColor === fillColor) {
       return;
@@ -62,8 +61,7 @@ class Board {
     while (pixelStack.length > 0) {
       const currentPixel = pixelStack.pop();
 
-      const key =
-        `${currentPixel.x},${currentPixel.y}`;
+      const key = `${currentPixel.x},${currentPixel.y}`;
 
       if (visited.has(key)) {
         continue;
@@ -114,13 +112,55 @@ class Board {
     }
   }
 
+  // MARK: - SCANLINE_FILL
+  scanlineFill(points, fillColor) {
+    const minY = Math.min(
+      ...points.map(point => point.y)
+    );
+
+    const maxY = Math.max(
+      ...points.map(point => point.y)
+    );
+
+    for (let y = minY; y <= maxY; y++) {
+      const intersections = [];
+
+      for (let i = 0; i < points.length; i++) {
+        const currentPoint = points[i];
+
+        const nextPoint = points[(i + 1) % points.length];
+
+        if (y >= Math.min(currentPoint.y, nextPoint.y) && y < Math.max(currentPoint.y, nextPoint.y)) {
+          const x = currentPoint.x + ((y - currentPoint.y) * (nextPoint.x - currentPoint.x)) / (nextPoint.y - currentPoint.y);
+
+          intersections.push(x);
+        }
+      }
+
+      intersections.sort((a, b) => a - b);
+
+      for (let i = 0; i < intersections.length; i += 2) {
+        const startX = Math.ceil(intersections[i]);
+
+        const endX = Math.floor(intersections[i + 1]);
+
+        for (let x = startX; x <= endX; x++) {
+          this.#image.setPixel(
+            x-1,
+            y-1,
+            fillColor
+          );
+        }
+      }
+    }
+  }
+
   clear() {
     this.#image.clear()
   }
 }
 
-
-// MARK: - TENTATIVA 01
+// MARK: - TENTATIVA 01 FF
 // POR ALGUM MOTIVO ELE CRASHA O PROJETO
 // floodfill(startX, startY, fillColor) {
   //   const targetColor = this.#image.getPixelColor(startX, startY);
@@ -193,7 +233,7 @@ class Board {
   //   }
 // }
 
-// MARK: - TENTATIVA 02
+// MARK: - TENTATIVA 02 FF
 // CAMINHADA LINEAR NÃO FLOODFILL
 // floodfill(startX, startY, fillColor) {
   //   const targetColor =
@@ -254,5 +294,47 @@ class Board {
   //       x: currentPixel.x + 1,
   //       y: currentPixel.y
   //     });
+  //   }
+// }
+
+  // MARK: - TENTATIVA 01 SF
+  // NÃO IA ATÉ O FIM E SEMPRE PULAVA UM VALOR
+// scanlineFill(points, fillColor) {
+  //   const minY = Math.min(
+  //     ...points.map(point => point.y)
+  //   );
+
+  //   const maxY = Math.max(
+  //     ...points.map(point => point.y)
+  //   );
+
+  //   for (let y = minY; y <= maxY; y++) {
+  //     const intersections = [];
+
+  //     for (let i = 0; i < points.length; i++) {
+  //       const currentPoint = points[i];
+
+  //       const nextPoint = points[(i + 1) % points.length];
+
+  //       if (y >= Math.min(currentPoint.y, nextPoint.y) && y < Math.max(currentPoint.y, nextPoint.y)) {
+  //         const x = currentPoint.x + ((y - currentPoint.y) * (nextPoint.x - currentPoint.x)) / (nextPoint.y - currentPoint.y);
+
+  //         intersections.push(x);
+  //       }
+  //     }
+
+  //     for (let i = 0; i < intersections.length; i += 2) {
+  //       const startX = Math.ceil(intersections[i]);
+
+  //       const endX = Math.floor(intersections[i + 1]);
+
+  //       for (let x = startX; x <= endX; x++) {
+  //         this.#image.setPixel(
+  //           x,
+  //           y,
+  //           fillColor
+  //         );
+  //       }
+  //     }
   //   }
 // }

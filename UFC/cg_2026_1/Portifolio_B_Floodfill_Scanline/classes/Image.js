@@ -15,17 +15,13 @@ class BoardImage {
   }
 
   getPixelColor(x, y) {
-    const pixel =
-      this.getPixel(x, y);
+    const pixel = this.getPixel(x, y);
 
-    return pixel
-      ? pixel.color
-      : null;
+    return pixel ? pixel.color : null;
   }
 
   setPixel(x, y, color) {
-    const pixel =
-      this.getPixel(x, y);
+    const pixel = this.getPixel(x, y);
 
     if (pixel) {
       pixel.color = color;
