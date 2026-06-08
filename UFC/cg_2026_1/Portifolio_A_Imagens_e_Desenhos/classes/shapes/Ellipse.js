@@ -30,7 +30,7 @@ class Ellipse extends Shape {
     const CENTER_X = this.centerX;
     const CENTER_Y = this.centerY;
 
-    const points = [
+    const POINTS = [
       [ CENTER_X + x, CENTER_Y + y ],
       [ CENTER_X - x, CENTER_Y + y ],
 
@@ -38,7 +38,7 @@ class Ellipse extends Shape {
       [ CENTER_X - x, CENTER_Y - y ]
     ];
 
-    for (const [POINT_X, POINT_Y] of points) {
+    for (const [POINT_X, POINT_Y] of POINTS) {
       board.drawPixel(POINT_X, POINT_Y, this.color);
     }
   }

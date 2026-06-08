@@ -66,7 +66,7 @@ class Line extends Shape {
       return;
     }
 
-    const slope = (y2 - y1) / (x2 - x1);
+    const SLOPE = (y2 - y1) / (x2 - x1);
 
     let y = y1;
 
@@ -81,7 +81,7 @@ class Line extends Shape {
         this.color
       );
 
-      y += slope * stepX;
+      y += SLOPE * stepX;
     }
   }
 
