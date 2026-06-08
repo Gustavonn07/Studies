@@ -1,16 +1,178 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+    <meta charset='utf-8'>    
+    <title>Meu primeiro triângulo em WebGL</title>
 </head>
-<body onload="main()">
+<body>
+    <!-- cria um canvas e lhe dâ um nome "canvas" -->
+    <canvas id="canvas" width="800" height="600">
+        Seu browser esta bem velho!
+    </canvas>
 
-  <canvas id="cid" width="800" height="600"></canvas>
+    <!-- vertex shader trivial como elemento da página -->
+    <script id="vertex-shader-zero" type="x-shader/x-vertex">
+        attribute vec3 a_position;
+        varying vec3 pos;
+        void main()
+        {
+            pos = a_position;
+            gl_Position = vec4( a_position, 0.5);;
+        }
+    </script>
+    <!-- fragment shader trivial como elemento da página -->
+    <script id="fragment-shader-zero" type="x-shader/x-fragment">
+        precision mediump float;
 
-  <script type="text/javascript" src="demo.js"></script>
-  <script id="shader-fs" type="x-shader/x-fragment"></script>
-  <script id="shader-vs" type="x-shader/x-vertex"></script>
+        varying vec3 pos;       
+        void main()
+        {           
+          gl_FragColor = vec4(pos, 1.0);
+        }
+    </script>
+
+    <!-- código JavaScript que executa na página -->
+    <script>
+        // função: cria e compila um shader a partir do texto do seu código-fonte
+        function createAndCompileShader(gl, type, source)
+        {
+            var shader = gl.createShader(type);
+            gl.shaderSource(shader, source);
+            gl.compileShader(shader);
+
+            // verifica se tudo ocorreu bem
+            var success = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
+            if (success) {
+                return shader;
+            }
+            
+            // imprime erros possíveis e descarta o shader nesse caso
+            console.log( gl.getShaderInfoLog(shader) );
+            gl.deleteShader(shader);
+            return null
+        }
+        // função: cria um programa a partir de dois ids de elementos da página
+        function makeProgram( gl, vert, frag )
+        {
+            // localiza o código-fonte pelo id via chamadas à API DOM
+            var vertexShaderSource = document.getElementById(vert).text;
+            var fragmentShaderSource = document.getElementById(frag).text;
+            
+            // criação dos shaders compilados
+            var vertexShader   = createAndCompileShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+            var fragmentShader = createAndCompileShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+
+            // cria o programa, adicionando os dois shaders recém-criados
+            var program = gl.createProgram();
+            gl.attachShader(program, vertexShader);
+            gl.attachShader(program, fragmentShader);
+            gl.linkProgram(program);
+
+            // verifica se o programa foi vinculado corretamente
+            var success = gl.getProgramParameter(program, gl.LINK_STATUS);
+            if (success) {
+                return program;
+            }
+            
+            // descarta o programa e loga erros 
+            console.log(gl.getProgramInfoLog(program));
+            gl.deleteProgram(program);
+            return null
+        }
+
+        // A) busca o canvas pelo identificador dele no documento, usando chamada DOM
+        var canvas = document.getElementById("canvas");
+        // B) requisita o contexto de renderização WebGL pelo nome
+        var gl = canvas.getContext("webgl");
+        
+        // checa se existe suporte a WebGL
+        if (gl)
+        {
+            // C) inspeciona a página em busca dos shaders para criar um programa
+            // SUGESTÃO: crie uma função semelhante que receba os códigos-fontes como parâmetros
+            //           mal dá trabalho para transformar um código "redondinho" em shader
+            shader = makeProgram( gl, "vertex-shader-zero", "fragment-shader-zero");
+            
+            
+			// D) inicialização da geometria (isso é o Rodo Retido, armazenando a malha em GPU)
+			
+			// D.1) manipulação dos dados no lado da CPU: construção de uma malha não indexada.
+			//      aqui, Float32Array adapta o tipo numérico do browser para aquele usado pelo driver gráfico
+            var vertexArray = new Float32Array([
+                -0.80, -0.80, // vértice 0, coordenadas 2D
+                +0.79, -0.79, // vértice 1, coordenadas 2D
+                +0.79, +0.79,  // vértice 2, coordenadas 2D
+
+                -0.80, -0.79, // vértice 3, coordenadas 2D
+                +0.79, +0.80, // vértice 4, coordenadas 2D
+                -0.80, +0.79,  // vértice 5, coordenadas 2D
+            ]);
+			
+			
+            // D.2) criação de um WebGLBuffer com vértices a serem renderizados.
+            //      você irá associar o buffer aos parâmetros de entrada do seu vertex shader.
+            var vbuf = gl.createBuffer();
+            
+            // D.3) etapa de binding.
+            //      vincula o buffer como o atual em uso pela API. pense nisso como um "seletor".
+            //      uma aplicação típica contém vários e vários buffers!
+            gl.bindBuffer(gl.ARRAY_BUFFER, vbuf);
+            
+            // D.3) Passa os dados no Float32Array (CPU) para o WebGLBuffer, que geralmente está na memória da GPU.
+            //      Nesse caso os dados são estáticos/constantes: STATIC_DRAW
+            gl.bufferData(gl.ARRAY_BUFFER, vertexArray, gl.STATIC_DRAW);
+
+            console.log("shader criado!");
+
+            // D.4) Define função de pintura onde um frame é produzido!
+            function drawScene()
+            {
+            	// -------------------------------------------------------------------------------
+                // configuração e reset do frame
+                // -------------------------------------------------------------------------------
+                // a) configura a região do canvas usada para o desenho (viewport)
+                gl.viewport(0, 0, canvas.width, canvas.height);
+
+                // b) limpa a imagem com um tom azul claro
+                gl.clearColor(0.8, 0.8, 1.0, 1.0);
+                gl.clear(gl.COLOR_BUFFER_BIT);
+                
+                // -------------------------------------------------------------------------------
+                // desenho do conteúdo do frame
+                // -------------------------------------------------------------------------------
+                // c) ativa o programa criado anteriormente
+                gl.useProgram(shader);
+
+                // d) vincula o buffer de atributos de vértices que criamos
+                gl.bindBuffer(gl.ARRAY_BUFFER, vbuf);
+                // d.1) localiza o atributo no programa que vai receber dados do buffer
+                aVertexPosition = gl.getAttribLocation(shader, "a_position");
+                // d.2) associa o vertex buffer atual ao atributo atual
+                gl.enableVertexAttribArray(aVertexPosition);
+                // d.3) informa o leiaute dos vértices, i.e., como os dados estão dispostos naquele buffer:
+                //      - 3 coordenadas do tipo float por vértice
+                //      - a normalização de ponto fixo não se aplica
+                //      - os dados estão contíguos na memória (stride 0) e começam do início do buffer (offset 0)
+                //
+                //      Vide hhttps://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/drawArrays para maiores detalhes
+                // [parâmetros] index atributo a modificar
+                //              size  número de scomponentes por atributo (1, 2, 3 ou 4)
+                //              type  tipo de dados usado nas componentes (byte,short,unsigned byte, unsigned short ou float)
+                //                    WebGL 2 possui tipos adicionais!
+                //              normalized indica se há normalização dos dados inteiros ao serem convertidos para float.
+                //              stride indica o intervalo entre cada conjunto consecutivo de componentes no WebGLBuffer.
+                //                     ex: num leiaute [x0,y0,z0,r0,g0,b0, x1,y1,z1,r1,g1,b1], o stride é necessário para
+                //                         indicar o espaçamento das coordenadas de 6 em 6.
+                //              offset índice da primeira componente no seu WebGLBuffer
+                gl.vertexAttribPointer(aVertexPosition, 2, gl.FLOAT, false, 0, 0); 
+
+                // d.4) realiza o desenho usando 3 vértices, a partir do primeiro (índice 0)
+                gl.drawArrays(gl.TRIANGLES, 0, 6);
+            }
+
+            // E) invoca a função de pintura UMA vez
+            drawScene();
+        }
+    </script>
 </body>
 </html>
