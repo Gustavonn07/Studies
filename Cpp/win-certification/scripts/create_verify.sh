@@ -1,0 +1,1 @@
+g++ WinTrustVerify.cpp -o verify.exe -lwintrust -municode -lcrypt32
